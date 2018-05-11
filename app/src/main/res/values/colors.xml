@@ -5,4 +5,16 @@
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
     <color name="lightGrey">#EEEEEE</color>
+    <color name="mainColorPrimary">#2D3640</color>
+    <color name="mainColorPrimaryDark">#394450</color>
+    <color name="replyBlue">#232F34</color>
+    <color name="blue50">#1976D2</color>
+
+
+    <color name="textColorOtherDetails">#B4BAC0</color>
+    <color name="circle">#4A7BA7</color>
+    <color name="textColorUsername">#2B3D4D</color>
+    <color name="green">#1B5E20</color>
+    <color name="red">#C62828</color>
+
 </resources>

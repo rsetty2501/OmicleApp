@@ -1,16 +1,18 @@
 package com.example.android.sircleapp;
 
-public class User {
+import java.io.Serializable;
+
+public class DepotUserInfo implements Serializable{
 
     private String address;
     private String name;
     private String reply;
 
-    public User() {
+    public DepotUserInfo() {
 
     }
 
-    public User(String address, String name, String reply) {
+    public DepotUserInfo(String address, String name, String reply) {
         this.address = address;
         this.name = name;
         this.reply = reply;
@@ -39,5 +41,4 @@ public class User {
     public void setReply(String reply) {
         this.reply = reply;
     }
-
 }

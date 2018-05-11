@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinner_array_items">
+        <item>@string/uppsala</item>
+        <item>@string/stockholm</item>
+        <item>@string/gothenburg</item>
+    </string-array>
+</resources>

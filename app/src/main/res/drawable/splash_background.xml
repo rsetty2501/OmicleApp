@@ -6,4 +6,5 @@
         <bitmap android:src="@mipmap/sircle_logo"
             android:gravity="center" />
     </item>
+
 </layer-list>

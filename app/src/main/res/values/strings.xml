@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">SircleApp</string>
+    <string name="app_name">Sircle</string>
+    <string name="uppsala">Uppsala</string>
+    <string name="stockholm">Stockholm</string>
+    <string name="gothenburg">Gothenburg</string>
 </resources>
