@@ -58,11 +58,16 @@ public class UserInfoListAdapter extends ArrayAdapter<DepotUserLocatn> {
             button.setText("Start");
             button.setBackgroundColor(mContext.getResources().getColor(R.color.green));
             gradientDrawable.setColor(mContext.getResources().getColor(R.color.green));
+//            button.setBackgroundColor(Color.GREEN);
+//            gradientDrawable.setColor(Color.GREEN);
         }
         else{
             button.setText("Not serviced");
             button.setBackgroundColor(mContext.getResources().getColor(R.color.red));
             gradientDrawable.setColor(mContext.getResources().getColor(R.color.red));
+//            button.setBackgroundColor(Color.RED);
+//            gradientDrawable.setColor(Color.RED);
+
         }
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,15 +77,21 @@ public class UserInfoListAdapter extends ArrayAdapter<DepotUserLocatn> {
                     button1.setText("Serviced");
                     button1.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                     gradientDrawable.setColor(mContext.getResources().getColor(R.color.green));
+//                    button1.setBackgroundColor(Color.GREEN);
+//                    gradientDrawable.setColor(Color.GREEN);
                 }
                 else if(button1.getText().toString().equals("Start")){
                     button1.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                     gradientDrawable.setColor(mContext.getResources().getColor(R.color.green));
+//                    button1.setBackgroundColor(Color.GREEN);
+//                    gradientDrawable.setColor(Color.GREEN);
                 }
                 else{
                     button1.setText("Not Serviced");
                     button1.setBackgroundColor(mContext.getResources().getColor(R.color.red));
                     gradientDrawable.setColor(mContext.getResources().getColor(R.color.red));
+//                    button1.setBackgroundColor(Color.RED);
+//                    gradientDrawable.setColor(Color.RED);
                 }
 
             }

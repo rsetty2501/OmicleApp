@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.sircleapp">
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/app_launch_icon"
@@ -30,6 +31,16 @@
 
         </activity>
 
+        <activity
+            android:name=".RouteMap"
+            android:label="@string/route_map"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".SegmentedUsers">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".SegmentedUsers" />
+        </activity>
     </application>
 
 </manifest>

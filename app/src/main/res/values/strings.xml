@@ -3,4 +3,5 @@
     <string name="uppsala">Uppsala</string>
     <string name="stockholm">Stockholm</string>
     <string name="gothenburg">Gothenburg</string>
+    <string name="route_map">RouteMap</string>
 </resources>

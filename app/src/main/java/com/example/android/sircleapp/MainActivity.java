@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity{
         routeAdapter = new RouteAdapter(this, clusterList);
         listView.setAdapter(routeAdapter);
 
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -60,7 +61,6 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onResume(){
         super.onResume();
-        listView.setVisibility(View.VISIBLE);
     }
 
     // For the Spinner menu which contains the city names list
@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String cityName = adapterView.getItemAtPosition(i).toString();
+                clusterList.clear();
                 fetchClusterDataFirebase(cityName);
             }
 
@@ -118,7 +119,6 @@ public class MainActivity extends AppCompatActivity{
 
                 for(DataSnapshot userSnapshot : dataSnapshot.getChildren()){
                     final String route = userSnapshot.getKey();
-                    Log.e("route", "cluster: " + route);
                     DatabaseReference routeRef = clusterRef.child(route);
                     routeRef.addValueEventListener(new ValueEventListener() {
                         @Override
