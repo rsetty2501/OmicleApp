@@ -22,11 +22,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Map;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
+    final Map<String, Double> distanceClusterName = new HashMap<>();
     ListView listView;
     LinkedList<ClusterUserList> clusterList = new LinkedList<>();
     RouteAdapter routeAdapter;
@@ -37,9 +40,15 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         setTitle("Route Cluster");
 
+
         listView = findViewById(R.id.list_view_route);
         routeAdapter = new RouteAdapter(this, clusterList);
         listView.setAdapter(routeAdapter);
+
+        for (Map.Entry<String, Double> entry : distanceClusterName.entrySet()) {
+            Log.e("main", "Inside map!");
+            Log.e("main", "Distance: " + entry.getKey() + " cluster: " + entry.getValue());
+        }
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -54,12 +63,12 @@ public class MainActivity extends AppCompatActivity{
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
     }
 
@@ -77,7 +86,6 @@ public class MainActivity extends AppCompatActivity{
 
         spinner.setAdapter(adapter);
 
-        // Refresh the list
         clusterList.clear();
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -86,6 +94,7 @@ public class MainActivity extends AppCompatActivity{
                 String cityName = adapterView.getItemAtPosition(i).toString();
                 clusterList.clear();
                 fetchClusterDataFirebase(cityName);
+
             }
 
             @Override
@@ -97,7 +106,7 @@ public class MainActivity extends AppCompatActivity{
         return true;
     }
 
-    private void fetchClusterDataFirebase(String cityName){
+    private void fetchClusterDataFirebase(String cityName) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         // retrieve user data from database
@@ -105,19 +114,49 @@ public class MainActivity extends AppCompatActivity{
         Date date = new Date();
         String currDate = formatter.format(date);
 
-        DatabaseReference Ref = database.getReference(cityName).child("10-05-2018");
-        DatabaseReference clusterRef = Ref.child("Clusters");
+        DatabaseReference Ref = database.getReference(cityName).child(currDate);
+        DatabaseReference clusterRef = Ref.child("Clusters"); // Route info
+        DatabaseReference distanceRef = Ref.child("Distance");
         getClusterDetails(clusterRef);
+        getDistanceCluster(distanceRef);
     }
 
-    private void getClusterDetails(final DatabaseReference clusterRef){
+    private void getDistanceCluster(DatabaseReference distanceRef) {
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Map<String, Double> distClust;
+                for (DataSnapshot distSnapshot : dataSnapshot.getChildren()) {
+                    distClust = (Map<String, Double>) distSnapshot.getValue();
+                    assert distClust != null;
+                    for (Map.Entry<String, Double> entry : distClust.entrySet()) {
+                        distanceClusterName.put(entry.getKey(), entry.getValue());
+                        synchronized (distanceClusterName) {
+                            distanceClusterName.notifyAll();
+                        }
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        distanceRef.addValueEventListener(eventListener);
+    }
+
+    private void getClusterDetails(final DatabaseReference clusterRef) {
 
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
 
-                for(DataSnapshot userSnapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     final String route = userSnapshot.getKey();
                     DatabaseReference routeRef = clusterRef.child(route);
                     routeRef.addValueEventListener(new ValueEventListener() {
@@ -125,7 +164,7 @@ public class MainActivity extends AppCompatActivity{
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
                             LinkedList<DepotUserLocatn> depotUserLocatnLinkedList = new LinkedList<>();
-                            for(DataSnapshot routeSnapshot : dataSnapshot.getChildren()){
+                            for (DataSnapshot routeSnapshot : dataSnapshot.getChildren()) {
                                 DepotUserLocatn depotUserLocatn = routeSnapshot.getValue(DepotUserLocatn.class);
                                 depotUserLocatnLinkedList.add(depotUserLocatn);
                             }
@@ -139,6 +178,8 @@ public class MainActivity extends AppCompatActivity{
                     });
 
                 }
+
+
             }
 
             @Override
@@ -150,7 +191,7 @@ public class MainActivity extends AppCompatActivity{
         clusterRef.addValueEventListener(eventListener);
     }
 
-    private void extractDataFirebase(String route, LinkedList<DepotUserLocatn> depotUserLocatnLinkedList){
+    private void extractDataFirebase(String route, LinkedList<DepotUserLocatn> depotUserLocatnLinkedList) {
         clusterList.add(new ClusterUserList(route, depotUserLocatnLinkedList));
         routeAdapter.notifyDataSetChanged();
     }

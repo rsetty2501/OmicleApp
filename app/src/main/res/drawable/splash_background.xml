@@ -3,7 +3,7 @@
     <item android:drawable="@color/white" />
 
     <item>
-        <bitmap android:src="@mipmap/sircle_logo"
+        <bitmap android:src="@mipmap/am_circle"
             android:gravity="center" />
     </item>
 

@@ -3,8 +3,10 @@ package com.example.android.sircleapp;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -43,6 +45,10 @@ public class RouteMap extends AppCompatActivity {
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
         //inflate and create the map
         setContentView(R.layout.activity_mapview);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         getLocationCoordsList();
 
         uppsalaMapView();
@@ -165,9 +171,21 @@ public class RouteMap extends AppCompatActivity {
         @Override
         protected final Polyline doInBackground(ArrayList<GeoPoint>... waypoints) {
 
-            RoadManager roadManager = new MapQuestRoadManager("<APIKEY>");
+//            RoadManager roadManager = new MapQuestRoadManager("lAAGx5jEeYKdwHBSDGr08PL4zXOHz5uo");
+            RoadManager roadManager = new OSRMRoadManager(getApplicationContext());
+            Road road = null;
 
-            Road road = roadManager.getRoad(waypoints[0]);
+            try{
+                road = roadManager.getRoad(waypoints[0]);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+            assert road != null;
+            if(road.mStatus != Road.STATUS_OK){
+                Log.e("Route","Error!");
+            }
 
             return RoadManager.buildRoadOverlay(road);
         }

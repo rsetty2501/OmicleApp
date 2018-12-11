@@ -58,10 +58,12 @@ public class SegmentedUsers extends AppCompatActivity {
 
     private void setClusterUserList(){
         clusterUserList = (ClusterUserList) getIntent().getSerializableExtra(SircleAppConstants.CLUSTER_USER_LIST);
-        clusterName = clusterUserList.getCluster();
-        depotUserLocatns = clusterUserList.getUserInfoList();
-        userInfoListAdapter = new UserInfoListAdapter(getApplicationContext(), depotUserLocatns);
-        listView.setAdapter(userInfoListAdapter);
+        if(clusterUserList != null){
+            clusterName = clusterUserList.getCluster();
+            depotUserLocatns = clusterUserList.getUserInfoList();
+            userInfoListAdapter = new UserInfoListAdapter(getApplicationContext(), depotUserLocatns);
+            listView.setAdapter(userInfoListAdapter);
+        }
     }
 
     private void getLocationCoordsList() {
